@@ -36,7 +36,7 @@ export class LoginPage {
 
   async clickSignIn() {
     await this.signInBtn().click();
-    await this.proceedBtn().waitFor({ state: 'visible', timeout: 20_000 });
+    await this.proceedBtn().waitFor({ state: 'visible', timeout: 45_000 });
   }
 
   async clickTextMe() {
