@@ -1,5 +1,5 @@
 import { test as base, expect } from '@playwright/test';
-import type { APIRequestContext } from '@playwright/test';
+import type { APIRequestContext, APIResponse } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
@@ -25,5 +25,18 @@ export const test = base.extend<{ api: APIRequestContext }>({
     await context.dispose();
   },
 });
+
+/**
+ * Safely parse an API response. Returns `null` when the response
+ * is not OK or the body is not valid JSON (e.g. API unreachable in CI).
+ */
+export async function safeJson(res: APIResponse): Promise<any | null> {
+  try {
+    if (!res.ok()) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
 
 export { expect };

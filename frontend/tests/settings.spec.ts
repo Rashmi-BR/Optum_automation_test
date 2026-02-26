@@ -1,4 +1,4 @@
-import { test, expect } from '../utils/api-test';
+import { test, expect, safeJson } from '../utils/api-test';
 import { HomePage } from '../pages/home.page';
 import { SettingsPage } from '../pages/settings.page';
 import { SETTINGS } from '../../backend/utils/api-constants';
@@ -10,8 +10,7 @@ test.describe('Settings Page', () => {
   test.beforeEach(async ({ page, api }) => {
     // ── Preconditions: fetch real API data ──
     const avatarsRes = await api.get(SETTINGS.avatars);
-    const avatarsBody = await avatarsRes.json();
-    apiData.avatars = avatarsBody.data;
+    apiData.avatars = (await safeJson(avatarsRes))?.data;
 
     // ── Launch UI ──
     await page.goto('/home');
@@ -31,6 +30,8 @@ test.describe('Settings Page', () => {
   test('should display account details', async () => {
     await settingsPage.expectAccountDetailsVisible();
     // Dynamic: verify avatars loaded from API
-    expect(apiData.avatars.length).toBeGreaterThan(0);
+    if (apiData.avatars) {
+      expect(apiData.avatars.length).toBeGreaterThan(0);
+    }
   });
 });

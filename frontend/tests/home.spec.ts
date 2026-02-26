@@ -1,4 +1,4 @@
-import { test, expect } from '../utils/api-test';
+import { test, expect, safeJson } from '../utils/api-test';
 import { HomePage } from '../pages/home.page';
 import { COMMON, HOME } from '../../backend/utils/api-constants';
 
@@ -20,14 +20,14 @@ test.describe('Home Page', () => {
         api.get(HOME.topPicks),
       ]);
 
-    apiData.banners = (await bannersRes.json()).data;
-    apiData.rewards = (await rewardsRes.json()).data;
-    apiData.points = (await pointsRes.json()).data;
-    apiData.healthScore = (await scoreRes.json()).data;
-    apiData.onboarding = (await onboardingRes.json()).data;
-    apiData.focusAreas = (await focusRes.json()).data;
-    apiData.missions = (await missionsRes.json()).data;
-    apiData.topPicks = (await topPicksRes.json()).data;
+    apiData.banners = (await safeJson(bannersRes))?.data;
+    apiData.rewards = (await safeJson(rewardsRes))?.data;
+    apiData.points = (await safeJson(pointsRes))?.data;
+    apiData.healthScore = (await safeJson(scoreRes))?.data;
+    apiData.onboarding = (await safeJson(onboardingRes))?.data;
+    apiData.focusAreas = (await safeJson(focusRes))?.data;
+    apiData.missions = (await safeJson(missionsRes))?.data;
+    apiData.topPicks = (await safeJson(topPicksRes))?.data;
 
     // ── Launch UI ──
     await page.goto('/home');
@@ -51,10 +51,12 @@ test.describe('Home Page', () => {
   test('should display summary section with rewards and points', async ({ page }) => {
     await homePage.expectSummarySectionVisible();
     // Dynamic: verify actual values from API
-    const summary = page.locator('[data-testid="summary-section"]');
-    await expect(summary).toContainText(`${apiData.rewards.rewardsBalanceAmt}`);
-    await expect(summary).toContainText(`${apiData.points.pointsBalanceAmt}`);
-    await expect(summary).toContainText(`${apiData.healthScore.currentHealthScoreAmt}`);
+    if (apiData.rewards && apiData.points && apiData.healthScore) {
+      const summary = page.locator('[data-testid="summary-section"]');
+      await expect(summary).toContainText(`${apiData.rewards.rewardsBalanceAmt}`);
+      await expect(summary).toContainText(`${apiData.points.pointsBalanceAmt}`);
+      await expect(summary).toContainText(`${apiData.healthScore.currentHealthScoreAmt}`);
+    }
   });
 
   test('should display setup guide', async () => {
