@@ -11,11 +11,16 @@ const TOKEN_FILE = path.resolve('playwright/.auth/api-token.json');
  */
 export const test = base.extend<{ api: APIRequestContext }>({
   api: async ({ playwright }, use) => {
-    const { token } = JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf-8'));
+    let token = '';
+    try {
+      token = JSON.parse(fs.readFileSync(TOKEN_FILE, 'utf-8')).token ?? '';
+    } catch {
+      // Token file missing (e.g. auth setup failed) — create unauthenticated context
+    }
     const context = await playwright.request.newContext({
       baseURL: 'https://api.rallyengage.com',
       extraHTTPHeaders: {
-        Authorization: `Bearer ${token}`,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         Accept: 'application/json',
         Referer: 'https://1126.rallyengage.com/',
         'Accept-Language': 'en-US',
