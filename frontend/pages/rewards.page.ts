@@ -39,10 +39,12 @@ export class RewardsPage {
   }
 
   async expectSweepstakesSectionVisible() {
+    await this.sweepstakesSection().scrollIntoViewIfNeeded();
     await expect(this.sweepstakesSection()).toBeVisible();
   }
 
   async expectDonationsSectionVisible() {
+    await this.donationsSection().scrollIntoViewIfNeeded();
     await expect(this.donationsSection()).toBeVisible();
   }
 }
