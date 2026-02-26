@@ -1,0 +1,39 @@
+{
+  "name": "optum_automation_test",
+  "version": "1.0.0",
+  "description": "Lightweight Playwright automation trial repo for Web and Mobile smoke testing, designed to avoid over-engineering and support rapid experimentation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:login": "npx playwright test frontend/tests/login.spec.ts",
+    "test:home": "npx playwright test frontend/tests/home.spec.ts",
+    "test:explore": "npx playwright test frontend/tests/explore.spec.ts",
+    "test:benefits": "npx playwright test frontend/tests/benefits.spec.ts",
+    "test:rewards": "npx playwright test frontend/tests/rewards.spec.ts",
+    "test:settings": "npx playwright test frontend/tests/settings.spec.ts",
+    "test:signout": "npx playwright test frontend/tests/signout.spec.ts",
+    "test:api": "npx playwright test --project=api-setup --project=api",
+    "test:api:common": "npx playwright test --project=api-setup --project=api backend/tests/common.api.spec.ts",
+    "test:api:home": "npx playwright test --project=api-setup --project=api backend/tests/home.api.spec.ts",
+    "test:api:explore": "npx playwright test --project=api-setup --project=api backend/tests/explore.api.spec.ts",
+    "test:api:benefits": "npx playwright test --project=api-setup --project=api backend/tests/benefits.api.spec.ts",
+    "test:api:rewards": "npx playwright test --project=api-setup --project=api backend/tests/rewards.api.spec.ts",
+    "test:api:settings": "npx playwright test --project=api-setup --project=api backend/tests/settings.api.spec.ts",
+    "report": "npx playwright show-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rashmi-BR/Optum_automation_test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Rashmi-BR/Optum_automation_test/issues"
+  },
+  "homepage": "https://github.com/Rashmi-BR/Optum_automation_test#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.2.2"
+  }
+}
