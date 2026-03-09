@@ -11,6 +11,7 @@
     "test:benefits": "npx playwright test frontend/tests/benefits.spec.ts",
     "test:rewards": "npx playwright test frontend/tests/rewards.spec.ts",
     "test:settings": "npx playwright test frontend/tests/settings.spec.ts",
+    "test:healthSurvey": "npx playwright test frontend/tests/healthSurvey.spec.ts",
     "test:signout": "npx playwright test frontend/tests/signout.spec.ts",
     "test:api": "npx playwright test --project=api-setup --project=api",
     "test:api:common": "npx playwright test --project=api-setup --project=api backend/tests/common.api.spec.ts",

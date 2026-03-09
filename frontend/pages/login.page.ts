@@ -55,9 +55,23 @@ export class LoginPage {
   async completeLogin() {
     await this.goToWelcome();
     await this.clickContinueWithHealthsafeId();
-    await this.page.waitForTimeout(2000);
-    await this.fillUsername(credentials.email);
-    await this.fillPassword(credentials.password);
+    // Wait for HealthSafe ID page to fully initialize
+    await this.page.waitForTimeout(3000);
+
+    // Click + clear + type credentials character-by-character to trigger all JS events
+    await this.usernameInput().click();
+    await this.usernameInput().fill('');
+    await this.usernameInput().pressSequentially(credentials.email, { delay: 50 });
+    await this.page.waitForTimeout(500);
+
+    await this.passwordInput().click();
+    await this.passwordInput().fill('');
+    await this.passwordInput().pressSequentially(credentials.password, { delay: 50 });
+    await this.page.waitForTimeout(500);
+
+    // Debug: take screenshot to verify fields are filled
+    await this.page.screenshot({ path: 'test-results/debug-before-signin.png' });
+
     await this.clickSignIn();
     await this.clickTextMe();
     await this.fillOtp(credentials.otp);

@@ -35,9 +35,23 @@ export default defineConfig({
       testDir: './frontend/tests',
     },
     {
+      name: 'explore-setup',
+      testMatch: /auth-explore\.setup\.ts/,
+      testDir: './frontend/tests',
+    },
+    {
+      name: 'explore',
+      testDir: './frontend/tests',
+      testMatch: /explore\.spec\.ts/,
+      use: {
+        storageState: 'playwright/.auth/explore-user.json',
+      },
+      dependencies: ['explore-setup'],
+    },
+    {
       name: 'chromium',
       testDir: './frontend/tests',
-      testIgnore: /login\.spec\.ts|auth\.setup\.ts/,
+      testIgnore: /login\.spec\.ts|auth\.setup\.ts|auth-explore\.setup\.ts|explore\.spec\.ts/,
       use: {
         storageState: 'playwright/.auth/user.json',
       },

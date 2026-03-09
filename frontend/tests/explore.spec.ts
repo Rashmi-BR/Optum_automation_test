@@ -1,6 +1,43 @@
-import { test, expect, safeJson } from '../utils/api-test';
+import { test as base, expect } from '@playwright/test';
+import type { APIRequestContext, APIResponse } from '@playwright/test';
 import { ExplorePage } from '../pages/explore.page';
 import { EXPLORE } from '../../backend/utils/api-constants';
+import fs from 'fs';
+import path from 'path';
+
+const EXPLORE_TOKEN_FILE = path.resolve('playwright/.auth/explore-api-token.json');
+
+/** Explore-specific test fixture using the explore user's API token */
+const test = base.extend<{ api: APIRequestContext }>({
+  api: async ({ playwright }, use) => {
+    let token = '';
+    try {
+      token = JSON.parse(fs.readFileSync(EXPLORE_TOKEN_FILE, 'utf-8')).token ?? '';
+    } catch {
+      // Token file missing — create unauthenticated context
+    }
+    const context = await playwright.request.newContext({
+      baseURL: 'https://api.rallyengage.com',
+      extraHTTPHeaders: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        Accept: 'application/json',
+        Referer: 'https://1126.rallyengage.com/',
+        'Accept-Language': 'en-US',
+      },
+    });
+    await use(context);
+    await context.dispose();
+  },
+});
+
+async function safeJson(res: APIResponse): Promise<any | null> {
+  try {
+    if (!res.ok()) return null;
+    return await res.json();
+  } catch {
+    return null;
+  }
+}
 
 test.describe('Explore Page', () => {
   let explorePage: ExplorePage;
