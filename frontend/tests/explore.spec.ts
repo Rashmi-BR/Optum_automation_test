@@ -1,7 +1,7 @@
 import { test as base, expect } from '@playwright/test';
 import type { APIRequestContext, APIResponse } from '@playwright/test';
 import { ExplorePage } from '../pages/explore.page';
-import { EXPLORE } from '../../backend/utils/api-constants';
+import { EXPLORE } from '../utils/api-constants';
 import fs from 'fs';
 import path from 'path';
 

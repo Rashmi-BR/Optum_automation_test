@@ -73,7 +73,7 @@ export class SettingsPage {
   }
 
   async expectSettingsPageLoaded() {
-    await expect(this.page.getByText('Manage Your Account')).toBeVisible();
+    await expect(this.page.getByTestId('settings-header-account-Title')).toBeVisible();
   }
 
   async expectSidebarMenuVisible() {

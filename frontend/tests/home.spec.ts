@@ -1,7 +1,7 @@
 import { test, expect, safeJson } from '../utils/api-test';
 import type { Page } from '@playwright/test';
 import { HomePage } from '../pages/home.page';
-import { COMMON, HOME } from '../../backend/utils/api-constants';
+import { COMMON, HOME } from '../utils/api-constants';
 
 test.describe('Home Page', () => {
   let homePage: HomePage;

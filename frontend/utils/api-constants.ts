@@ -1,12 +1,7 @@
-const BASE = '/b2c/x/classic/healthcare-1126';
+import { ENV } from './env-config';
 
-// Test user params extracted from authenticated session
-const USER = {
-  externalFacingId: 'hXngHeN46%2BvplOESj7vyUHIAGaSXuKopIDVAalMijC8497000058',
-  affiliationId: '28c6476d-2f62-40b7-a435-a618b735b4e4',
-  employerId: 'fa778ba9-bbef-4abd-9ac9-e8addd397c57',
-  client: 'nationwide',
-} as const;
+const BASE = ENV.apiBasePath;
+const USER = ENV.user;
 
 // ── Common / Global APIs ────────────────────────────────────────────────
 export const COMMON = {

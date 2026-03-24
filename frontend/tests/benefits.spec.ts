@@ -1,7 +1,7 @@
 import { test, expect, safeJson } from '../utils/api-test';
 import { BenefitsPage } from '../pages/benefits.page';
 import { HomePage } from '../pages/home.page';
-import { BENEFITS } from '../../backend/utils/api-constants';
+import { BENEFITS } from '../utils/api-constants';
 import type { Page } from '@playwright/test';
 
 /** Helper to log link click result and close new tab if opened */

@@ -1,4 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
+import { ENV, CURRENT_ENV } from './frontend/utils/env-config';
+
+console.log(`Running tests against: ${CURRENT_ENV} (${ENV.baseURL})`);
 
 export default defineConfig({
   fullyParallel: false,
@@ -10,7 +13,7 @@ export default defineConfig({
   expect: { timeout: 10_000 },
 
   use: {
-    baseURL: 'https://1126.rallyengage.com',
+    baseURL: ENV.baseURL,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     actionTimeout: 15_000,
@@ -56,23 +59,6 @@ export default defineConfig({
         storageState: 'playwright/.auth/user.json',
       },
       dependencies: ['setup'],
-    },
-
-    // ── Backend API projects ──────────────────────────────────
-    {
-      name: 'api-setup',
-      testMatch: /api-auth\.setup\.ts/,
-      testDir: './backend/tests',
-    },
-    {
-      name: 'api',
-      testDir: './backend/tests',
-      testMatch: /\.api\.spec\.ts/,
-      use: {
-        baseURL: 'https://api.rallyengage.com',
-        storageState: 'playwright/.auth/api-user.json',
-      },
-      dependencies: ['api-setup'],
     },
   ],
 });

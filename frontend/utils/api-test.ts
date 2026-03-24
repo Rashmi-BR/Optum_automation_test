@@ -2,6 +2,7 @@ import { test as base, expect } from '@playwright/test';
 import type { APIRequestContext, APIResponse } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
+import { ENV } from './env-config';
 
 const TOKEN_FILE = path.resolve('playwright/.auth/api-token.json');
 
@@ -18,11 +19,11 @@ export const test = base.extend<{ api: APIRequestContext }>({
       // Token file missing (e.g. auth setup failed) — create unauthenticated context
     }
     const context = await playwright.request.newContext({
-      baseURL: 'https://api.rallyengage.com',
+      baseURL: ENV.apiBaseURL,
       extraHTTPHeaders: {
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         Accept: 'application/json',
-        Referer: 'https://1126.rallyengage.com/',
+        Referer: `${ENV.baseURL}/`,
         'Accept-Language': 'en-US',
       },
     });

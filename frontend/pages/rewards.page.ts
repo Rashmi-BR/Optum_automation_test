@@ -4,7 +4,7 @@ export class RewardsPage {
   constructor(private page: Page) {}
 
   private rewardsHeading = () => this.page.getByText('Rewards').first();
-  private employerRewards = () => this.page.getByText('Employer Rewards').first();
+  private rewardsForHealth = () => this.page.getByText('Rewards for Health').first();
   private totalEarnedLabel = () => this.page.getByText('Total Earned').first();
   private pointsBalance = () => this.page.getByText('Balance');
   private redeemSection = () => this.page.getByText('Redeem your points');
@@ -14,11 +14,11 @@ export class RewardsPage {
   private donationsSection = () => this.page.getByText('Donations');
 
   async expectRewardsPageLoaded() {
-    await expect(this.employerRewards()).toBeVisible();
+    await expect(this.rewardsForHealth()).toBeVisible();
   }
 
   async expectRewardsSummaryVisible() {
-    await expect(this.employerRewards()).toBeVisible();
+    await expect(this.rewardsForHealth()).toBeVisible();
     await expect(this.totalEarnedLabel()).toBeVisible();
   }
 

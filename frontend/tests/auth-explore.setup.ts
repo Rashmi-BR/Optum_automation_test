@@ -3,8 +3,8 @@ import { LoginPage } from '../pages/login.page';
 import { exploreCredentials } from '../utils/test-data';
 import fs from 'fs';
 
-const authFile = 'playwright/.auth/explore-user.json';
-const apiTokenFile = 'playwright/.auth/explore-api-token.json';
+const AUTH_FILE = 'playwright/.auth/explore-user.json';
+const API_TOKEN_FILE = 'playwright/.auth/explore-api-token.json';
 
 setup('authenticate for explore', async ({ page }) => {
   const loginPage = new LoginPage(page);
@@ -29,8 +29,8 @@ setup('authenticate for explore', async ({ page }) => {
   await loginPage.clickConfirm();
   await page.waitForURL('**/home', { timeout: 30_000 });
 
-  await page.context().storageState({ path: authFile });
+  await page.context().storageState({ path: AUTH_FILE });
 
   const authToken = await page.evaluate(() => localStorage.getItem('auth_token'));
-  fs.writeFileSync(apiTokenFile, JSON.stringify({ token: authToken }));
+  fs.writeFileSync(API_TOKEN_FILE, JSON.stringify({ token: authToken }));
 });

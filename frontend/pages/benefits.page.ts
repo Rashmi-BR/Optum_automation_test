@@ -3,30 +3,27 @@ import { type Page, expect } from '@playwright/test';
 export class BenefitsPage {
   constructor(private page: Page) {}
 
-  // Resources heading
-  private resourcesHeading = () => this.page.getByTestId('benefits-other-benefits-parent-label');
+  // Page heading
+  private yourBenefitsHeading = () => this.page.getByText('Your Benefits').first();
+
+  // Resources section
+  private resourcesHeading = () => this.page.getByText('Resources', { exact: true }).first();
 
   // Accordion items
-  private introToOptumAccordion = () => this.page.getByTestId("Introduction to Optum Engage 'Accordion Item'");
-  private myBenefitsResourcesAccordion = () => this.page.getByTestId("My Benefits Resources 'Accordion Item'");
-  private otherBenefitsProgramsAccordion = () => this.page.getByTestId("Other Benefits Programs 'Accordion Item'");
-  private questionsContactsAccordion = () => this.page.getByTestId("Questions/Contacts 'Accordion Item'");
+  private moreBenefitResources = () => this.page.getByText('More Benefit Resources').first();
 
-  // Links under Introduction to Optum Engage
+  // Links under More Benefit Resources
   private buildingHealthyHabits = () => this.page.getByText('Building healthy habits', { exact: true });
   private rewardsAndBenefits = () => this.page.getByText('Rewards and Benefits', { exact: true });
 
   async expectBenefitsPageLoaded() {
-    await expect(this.resourcesHeading()).toBeVisible({ timeout: 15_000 });
+    await expect(this.yourBenefitsHeading()).toBeVisible({ timeout: 15_000 });
   }
 
-  // --- Accordion section visibility ---
+  // --- Section visibility ---
 
   async expectAllAccordionsVisible() {
-    await expect(this.introToOptumAccordion()).toBeVisible();
-    await expect(this.myBenefitsResourcesAccordion()).toBeVisible();
-    await expect(this.otherBenefitsProgramsAccordion()).toBeVisible();
-    await expect(this.questionsContactsAccordion()).toBeVisible();
+    await expect(this.moreBenefitResources()).toBeVisible();
   }
 
   // --- Expand/collapse accordions ---
@@ -37,20 +34,8 @@ export class BenefitsPage {
     await this.page.waitForTimeout(2000);
   }
 
-  async expandIntroToOptum() {
-    await this.expandAccordion(this.introToOptumAccordion);
-  }
-
-  async expandMyBenefitsResources() {
-    await this.expandAccordion(this.myBenefitsResourcesAccordion);
-  }
-
-  async expandOtherBenefitsPrograms() {
-    await this.expandAccordion(this.otherBenefitsProgramsAccordion);
-  }
-
-  async expandQuestionsContacts() {
-    await this.expandAccordion(this.questionsContactsAccordion);
+  async expandMoreBenefitResources() {
+    await this.expandAccordion(this.moreBenefitResources);
   }
 
   // --- Verify links under Introduction to Optum Engage ---

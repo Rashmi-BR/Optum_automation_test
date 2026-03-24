@@ -1,6 +1,6 @@
 import { test, expect, safeJson } from '../utils/api-test';
 import { RewardsPage } from '../pages/rewards.page';
-import { COMMON, HOME, REWARDS } from '../../backend/utils/api-constants';
+import { COMMON, HOME, REWARDS } from '../utils/api-constants';
 
 test.describe('Rewards Page', () => {
   let rewardsPage: RewardsPage;
@@ -27,6 +27,7 @@ test.describe('Rewards Page', () => {
 
     // ── Launch UI ──
     await page.goto('/rewards');
+    await page.waitForLoadState('networkidle');
     rewardsPage = new RewardsPage(page);
     await rewardsPage.expectRewardsPageLoaded();
   });
@@ -35,7 +36,7 @@ test.describe('Rewards Page', () => {
     await rewardsPage.expectRewardsSummaryVisible();
     // Dynamic: verify rewards balance from API
     if (apiData.rewards) {
-      const rewardsSection = page.getByText('Employer Rewards').first().locator('..');
+      const rewardsSection = page.getByText('Rewards for Health').first().locator('..');
       await expect(rewardsSection).toContainText(`${apiData.rewards.rewardsBalanceAmt}`);
     }
   });

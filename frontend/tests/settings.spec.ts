@@ -1,7 +1,7 @@
 import { test, expect, safeJson } from '../utils/api-test';
 import { HomePage } from '../pages/home.page';
 import { SettingsPage } from '../pages/settings.page';
-import { SETTINGS } from '../../backend/utils/api-constants';
+import { SETTINGS } from '../utils/api-constants';
 
 test.describe('Settings Page', () => {
   let settingsPage: SettingsPage;

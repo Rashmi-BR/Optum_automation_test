@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { HomePage } from '../pages/home.page';
 import { SettingsPage } from '../pages/settings.page';
-import { HealthSurveyPage } from '../pages/healthSurvey.page';
+import { HealthSurveyPage } from '../pages/health-survey.page';
 
 test.describe('Health Survey Completion', () => {
   test.describe.configure({ mode: 'serial' });
@@ -61,28 +61,28 @@ test.describe('Health Survey Completion', () => {
     await page.waitForTimeout(3000);
 
     if (await healthSurveyPage.isSurveyComplete()) {
-      // Survey is 100% complete — click Retake
+      // Already 100% — Retake and select English
       console.log('[HealthSurvey] Survey complete — clicking Retake');
       await healthSurveyPage.clickRetakeSurvey();
+      await healthSurveyPage.selectLanguage('English');
     } else {
-      // Survey is in-progress — complete it first
-      console.log('[HealthSurvey] Survey in-progress — completing it first');
+      // Not complete — finish current survey first, then retake with English
+      console.log('[HealthSurvey] Survey not complete — completing current survey first');
       const entered = await healthSurveyPage.enterSurvey();
       console.log(`[HealthSurvey] Enter result: ${entered}`);
 
       if (entered !== 'already_complete') {
         const completed = await healthSurveyPage.completeSurveyLoop(50);
-        expect(completed, 'Survey should reach 100% before retaking').toBe(true);
+        expect(completed, 'Current survey should reach 100%').toBe(true);
       }
 
-      // Now click Retake
+      // Now retake with English
       await healthSurveyPage.clickRetakeSurvey();
+      await healthSurveyPage.selectLanguage('English');
     }
 
-    // Select English language and enter the survey
-    await healthSurveyPage.selectLanguage('English');
     const entered = await healthSurveyPage.enterSurvey();
-    console.log(`[HealthSurvey] Enter result after retake: ${entered}`);
+    console.log(`[HealthSurvey] Enter result after selecting English: ${entered}`);
   });
 
   test('Complete English survey until 100%', async () => {
@@ -151,28 +151,28 @@ test.describe('Spanish Health Survey Completion', () => {
     await page.waitForTimeout(3000);
 
     if (await healthSurveyPage.isSurveyComplete()) {
-      // Survey is 100% complete — click Retake
+      // Already 100% — Retake and select Español
       console.log('[SpanishSurvey] Survey complete — clicking Retake');
       await healthSurveyPage.clickRetakeSurvey();
+      await healthSurveyPage.selectLanguage('Español');
     } else {
-      // Survey is in-progress — complete it in English first
-      console.log('[SpanishSurvey] Survey in-progress — completing English first');
+      // Not complete — finish current survey first, then retake with Español
+      console.log('[SpanishSurvey] Survey not complete — completing current survey first');
       const entered = await healthSurveyPage.enterSurvey();
       console.log(`[SpanishSurvey] Enter result: ${entered}`);
 
       if (entered !== 'already_complete') {
         const completed = await healthSurveyPage.completeSurveyLoop(50);
-        expect(completed, 'English survey should reach 100% before switching to Spanish').toBe(true);
+        expect(completed, 'Current survey should reach 100% before switching to Español').toBe(true);
       }
 
-      // Now click Retake
+      // Now retake with Español
       await healthSurveyPage.clickRetakeSurvey();
+      await healthSurveyPage.selectLanguage('Español');
     }
 
-    // Select Español language and enter the survey
-    await healthSurveyPage.selectLanguage('Español');
     const entered = await healthSurveyPage.enterSurvey();
-    console.log(`[SpanishSurvey] Enter result after retake: ${entered}`);
+    console.log(`[SpanishSurvey] Enter result after selecting Español: ${entered}`);
   });
 
   test('Complete Spanish survey until 100%', async () => {
