@@ -1,15 +1,16 @@
 import { test, expect, type Page } from '@playwright/test';
-import { LoginPage } from '../pages/login.page';
+import { LoginPage } from '@capillary/optum-testing-ui-library';
+import { createDriver } from '../utils/driver-factory';
 
 test.describe('Login Flow - Welcome Page', () => {
   test('should display welcome page with Continue button', async ({ page }) => {
-    const loginPage = new LoginPage(page);
+    const loginPage = new LoginPage(createDriver(page));
     await loginPage.goToWelcome();
     await loginPage.expectWelcomePageVisible();
   });
 
   test('should navigate to HealthSafe ID login page', async ({ page }) => {
-    const loginPage = new LoginPage(page);
+    const loginPage = new LoginPage(createDriver(page));
     await loginPage.goToWelcome();
     await loginPage.clickContinueWithHealthsafeId();
     await loginPage.expectLoginFormVisible();
@@ -24,7 +25,7 @@ test.describe('Login Flow - Full Authentication', () => {
 
   test.beforeAll(async ({ browser }) => {
     page = await browser.newPage();
-    loginPage = new LoginPage(page);
+    loginPage = new LoginPage(createDriver(page));
     await loginPage.goToWelcome();
     await loginPage.clickContinueWithHealthsafeId();
   });

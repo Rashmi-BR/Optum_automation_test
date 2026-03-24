@@ -1,8 +1,7 @@
 import { test, expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
-import { HomePage } from '../pages/home.page';
-import { SettingsPage } from '../pages/settings.page';
-import { HealthSurveyPage } from '../pages/health-survey.page';
+import { HomePage, SettingsPage, HealthSurveyPage } from '@capillary/optum-testing-ui-library';
+import { createDriver } from '../utils/driver-factory';
 
 test.describe('Health Survey Completion', () => {
   test.describe.configure({ mode: 'serial' });
@@ -37,9 +36,10 @@ test.describe('Health Survey Completion', () => {
       await page.waitForTimeout(3000);
     }
 
-    homePage = new HomePage(page);
-    settingsPage = new SettingsPage(page);
-    healthSurveyPage = new HealthSurveyPage(page);
+    const driver = createDriver(page);
+    homePage = new HomePage(driver);
+    settingsPage = new SettingsPage(driver);
+    healthSurveyPage = new HealthSurveyPage(driver);
     await homePage.expectHomePageLoaded();
   });
 
@@ -130,9 +130,10 @@ test.describe('Spanish Health Survey Completion', () => {
       await page.waitForTimeout(3000);
     }
 
-    homePage = new HomePage(page);
-    settingsPage = new SettingsPage(page);
-    healthSurveyPage = new HealthSurveyPage(page);
+    const driver = createDriver(page);
+    homePage = new HomePage(driver);
+    settingsPage = new SettingsPage(driver);
+    healthSurveyPage = new HealthSurveyPage(driver);
     await homePage.expectHomePageLoaded();
   });
 

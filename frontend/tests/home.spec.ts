@@ -1,6 +1,7 @@
 import { test, expect, safeJson } from '../utils/api-test';
 import type { Page } from '@playwright/test';
-import { HomePage } from '../pages/home.page';
+import { HomePage } from '@capillary/optum-testing-ui-library';
+import { createDriver } from '../utils/driver-factory';
 import { COMMON, HOME } from '../utils/api-constants';
 
 test.describe('Home Page', () => {
@@ -32,7 +33,7 @@ test.describe('Home Page', () => {
 
     // ── Launch UI ──
     await page.goto('/home');
-    homePage = new HomePage(page);
+    homePage = new HomePage(createDriver(page));
     await homePage.expectHomePageLoaded();
   });
 
@@ -121,7 +122,7 @@ test.describe('Focus Area Setup and Quit', () => {
       await page.waitForTimeout(3000);
     }
 
-    homePage = new HomePage(page);
+    homePage = new HomePage(createDriver(page));
     await homePage.expectHomePageLoaded();
 
     // Cleanup: if focus area is already set, quit it first

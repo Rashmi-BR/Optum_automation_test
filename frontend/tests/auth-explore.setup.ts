@@ -1,5 +1,6 @@
 import { test as setup } from '@playwright/test';
-import { LoginPage } from '../pages/login.page';
+import { LoginPage } from '@capillary/optum-testing-ui-library';
+import { createDriver } from '../utils/driver-factory';
 import { exploreCredentials } from '../utils/test-data';
 import fs from 'fs';
 
@@ -7,7 +8,7 @@ const AUTH_FILE = 'playwright/.auth/explore-user.json';
 const API_TOKEN_FILE = 'playwright/.auth/explore-api-token.json';
 
 setup('authenticate for explore', async ({ page }) => {
-  const loginPage = new LoginPage(page);
+  const loginPage = new LoginPage(createDriver(page));
 
   await loginPage.goToWelcome();
   await loginPage.clickContinueWithHealthsafeId();

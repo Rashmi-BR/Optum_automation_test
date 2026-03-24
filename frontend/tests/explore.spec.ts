@@ -1,6 +1,7 @@
 import { test as base, expect } from '@playwright/test';
 import type { APIRequestContext, APIResponse } from '@playwright/test';
-import { ExplorePage } from '../pages/explore.page';
+import { ExplorePage } from '@capillary/optum-testing-ui-library';
+import { createDriver } from '../utils/driver-factory';
 import { EXPLORE } from '../utils/api-constants';
 import fs from 'fs';
 import path from 'path';
@@ -57,7 +58,7 @@ test.describe('Explore Page', () => {
 
     // ── Launch UI ──
     await page.goto('/explore');
-    explorePage = new ExplorePage(page);
+    explorePage = new ExplorePage(createDriver(page));
     await explorePage.expectExplorePageLoaded();
   });
 

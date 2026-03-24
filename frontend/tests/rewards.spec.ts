@@ -1,5 +1,6 @@
 import { test, expect, safeJson } from '../utils/api-test';
-import { RewardsPage } from '../pages/rewards.page';
+import { RewardsPage } from '@capillary/optum-testing-ui-library';
+import { createDriver } from '../utils/driver-factory';
 import { COMMON, HOME, REWARDS } from '../utils/api-constants';
 
 test.describe('Rewards Page', () => {
@@ -28,7 +29,7 @@ test.describe('Rewards Page', () => {
     // ── Launch UI ──
     await page.goto('/rewards');
     await page.waitForLoadState('networkidle');
-    rewardsPage = new RewardsPage(page);
+    rewardsPage = new RewardsPage(createDriver(page));
     await rewardsPage.expectRewardsPageLoaded();
   });
 

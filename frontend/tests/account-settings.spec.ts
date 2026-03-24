@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 import type { Page } from '@playwright/test';
-import { HomePage } from '../pages/home.page';
-import { SettingsPage } from '../pages/settings.page';
+import { HomePage, SettingsPage } from '@capillary/optum-testing-ui-library';
+import type { PlaywrightAdapter } from '@capillary/optum-testing-ui-library';
+import { createDriver } from '../utils/driver-factory';
 
 test.describe('Account Settings', () => {
   test.describe.configure({ mode: 'serial' });
@@ -35,8 +36,9 @@ test.describe('Account Settings', () => {
       await page.waitForTimeout(3000);
     }
 
-    homePage = new HomePage(page);
-    settingsPage = new SettingsPage(page);
+    const driver = createDriver(page);
+    homePage = new HomePage(driver);
+    settingsPage = new SettingsPage(driver);
     await homePage.expectHomePageLoaded();
   });
 
@@ -178,13 +180,13 @@ test.describe('Account Settings', () => {
 
   test('Verify Support link behavior', async () => {
     // Support may open a new tab or stay in-page — detect either
-    const newPage = await settingsPage.verifyOpensNewTab(
+    const newTab = await settingsPage.verifyOpensNewTab(
       () => settingsPage.clickSupport(),
     );
 
-    if (newPage) {
-      console.log(`[AccountSettings] Support opened new tab — URL: ${newPage.url()}`);
-      await newPage.close();
+    if (newTab) {
+      console.log(`[AccountSettings] Support opened new tab — URL: ${newTab.currentUrl()}`);
+      await (newTab as PlaywrightAdapter).unwrapPage().close();
     } else {
       console.log(`[AccountSettings] Support stayed in same page — URL: ${page.url()}`);
     }
@@ -192,13 +194,13 @@ test.describe('Account Settings', () => {
 
   test('Verify Help Center link behavior', async () => {
     // Help Center may open a new tab or stay in-page — detect either
-    const newPage = await settingsPage.verifyOpensNewTab(
+    const newTab = await settingsPage.verifyOpensNewTab(
       () => settingsPage.clickHelpCenter(),
     );
 
-    if (newPage) {
-      console.log(`[AccountSettings] Help Center opened new tab — URL: ${newPage.url()}`);
-      await newPage.close();
+    if (newTab) {
+      console.log(`[AccountSettings] Help Center opened new tab — URL: ${newTab.currentUrl()}`);
+      await (newTab as PlaywrightAdapter).unwrapPage().close();
     } else {
       console.log(`[AccountSettings] Help Center stayed in same page — URL: ${page.url()}`);
     }

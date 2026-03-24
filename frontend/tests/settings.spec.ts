@@ -1,6 +1,6 @@
 import { test, expect, safeJson } from '../utils/api-test';
-import { HomePage } from '../pages/home.page';
-import { SettingsPage } from '../pages/settings.page';
+import { HomePage, SettingsPage } from '@capillary/optum-testing-ui-library';
+import { createDriver } from '../utils/driver-factory';
 import { SETTINGS } from '../utils/api-constants';
 
 test.describe('Settings Page', () => {
@@ -14,9 +14,10 @@ test.describe('Settings Page', () => {
 
     // ── Launch UI ──
     await page.goto('/home');
-    const homePage = new HomePage(page);
+    const driver = createDriver(page);
+    const homePage = new HomePage(driver);
     await homePage.openProfile();
-    settingsPage = new SettingsPage(page);
+    settingsPage = new SettingsPage(driver);
   });
 
   test('should display settings page after clicking avatar', async () => {

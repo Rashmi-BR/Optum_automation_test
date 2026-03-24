@@ -1,15 +1,19 @@
 import { test, expect, safeJson } from '../utils/api-test';
-import { BenefitsPage } from '../pages/benefits.page';
-import { HomePage } from '../pages/home.page';
+import { BenefitsPage, HomePage } from '@capillary/optum-testing-ui-library';
+import type { PlaywrightAdapter } from '@capillary/optum-testing-ui-library';
+import { createDriver } from '../utils/driver-factory';
 import { BENEFITS } from '../utils/api-constants';
 import type { Page } from '@playwright/test';
 
 /** Helper to log link click result and close new tab if opened */
-async function logLinkResult(label: string, result: { newTab: Page | null; samePageNavigated: boolean }, page: Page) {
+async function logLinkResult(label: string, result: { newTab: import('@capillary/optum-testing-ui-library').UiAdapter | null; samePageNavigated: boolean }, page: Page) {
   if (result.newTab) {
-    console.log(`[Benefits] ${label} opened new tab — URL: ${result.newTab.url()}`);
-    expect(result.newTab.url()).toBeTruthy();
-    await result.newTab.close();
+    const url = result.newTab.currentUrl();
+    console.log(`[Benefits] ${label} opened new tab — URL: ${url}`);
+    expect(url).toBeTruthy();
+    // Close the new tab via the underlying Playwright page
+    const adapter = result.newTab as PlaywrightAdapter;
+    await adapter.unwrapPage().close();
   } else if (result.samePageNavigated) {
     console.log(`[Benefits] ${label} navigated in same page — URL: ${page.url()}`);
   } else {
@@ -49,7 +53,7 @@ test.describe('Benefits Page', () => {
       await page.waitForTimeout(3000);
     }
 
-    homePage = new HomePage(page);
+    homePage = new HomePage(createDriver(page));
     await homePage.expectHomePageLoaded();
   });
 
@@ -62,7 +66,7 @@ test.describe('Benefits Page', () => {
   test('Navigate to Benefits tab from Home', async () => {
     await homePage.navigateToBenefits();
     await page.waitForTimeout(3000);
-    benefitsPage = new BenefitsPage(page);
+    benefitsPage = new BenefitsPage(createDriver(page));
     await benefitsPage.expectBenefitsPageLoaded();
     console.log(`[Benefits] Navigated to Benefits — URL: ${page.url()}`);
   });
