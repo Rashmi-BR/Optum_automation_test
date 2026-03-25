@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { ENV, CURRENT_ENV } from './frontend/utils/env-config';
+import { ENV, CURRENT_ENV } from './web/utils/env-config';
 
 console.log(`Running tests against: ${CURRENT_ENV} (${ENV.baseURL})`);
 
@@ -26,25 +26,25 @@ export default defineConfig({
   },
 
   projects: [
-    // ── Frontend projects ─────────────────────────────────────
+    // ── Web projects ─────────────────────────────────────
     {
       name: 'setup',
       testMatch: /auth\.setup\.ts/,
-      testDir: './frontend/tests',
+      testDir: './web/tests',
     },
     {
       name: 'login',
       testMatch: /login\.spec\.ts/,
-      testDir: './frontend/tests',
+      testDir: './web/tests',
     },
     {
       name: 'explore-setup',
       testMatch: /auth-explore\.setup\.ts/,
-      testDir: './frontend/tests',
+      testDir: './web/tests',
     },
     {
       name: 'explore',
-      testDir: './frontend/tests',
+      testDir: './web/tests',
       testMatch: /explore\.spec\.ts/,
       use: {
         storageState: 'playwright/.auth/explore-user.json',
@@ -53,7 +53,7 @@ export default defineConfig({
     },
     {
       name: 'chromium',
-      testDir: './frontend/tests',
+      testDir: './web/tests',
       testIgnore: /login\.spec\.ts|auth\.setup\.ts|auth-explore\.setup\.ts|explore\.spec\.ts/,
       use: {
         storageState: 'playwright/.auth/user.json',

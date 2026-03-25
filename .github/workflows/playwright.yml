@@ -18,7 +18,7 @@ jobs:
       run: npm ci
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
-    - name: Run frontend tests
+    - name: Run web tests
       run: npx playwright test --project=setup --project=login --project=chromium
     - name: Run backend API tests
       if: ${{ !cancelled() }}

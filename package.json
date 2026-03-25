@@ -6,14 +6,14 @@
   "scripts": {
     "test": "npx playwright test",
     "test:uat": "ENV=uat npx playwright test",
-    "test:login": "npx playwright test frontend/tests/login.spec.ts",
-    "test:home": "npx playwright test frontend/tests/home.spec.ts",
-    "test:explore": "npx playwright test frontend/tests/explore.spec.ts",
-    "test:benefits": "npx playwright test frontend/tests/benefits.spec.ts",
-    "test:rewards": "npx playwright test frontend/tests/rewards.spec.ts",
-    "test:settings": "npx playwright test frontend/tests/settings.spec.ts",
-    "test:health-survey": "npx playwright test frontend/tests/health-survey.spec.ts",
-    "test:signout": "npx playwright test frontend/tests/signout.spec.ts",
+    "test:login": "npx playwright test web/tests/login.spec.ts",
+    "test:home": "npx playwright test web/tests/home.spec.ts",
+    "test:explore": "npx playwright test web/tests/explore.spec.ts",
+    "test:benefits": "npx playwright test web/tests/benefits.spec.ts",
+    "test:rewards": "npx playwright test web/tests/rewards.spec.ts",
+    "test:settings": "npx playwright test web/tests/settings.spec.ts",
+    "test:health-survey": "npx playwright test web/tests/health-survey.spec.ts",
+    "test:signout": "npx playwright test web/tests/signout.spec.ts",
     "report": "npx playwright show-report"
   },
   "repository": {

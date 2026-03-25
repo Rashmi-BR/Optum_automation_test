@@ -2,7 +2,7 @@
 
 Lightweight Playwright automation suite for **Optum Engage (Rally Engage)** covering both Web UI smoke tests and Backend API validation.
 
-Frontend tests use **API-driven preconditions** — real backend APIs are called before each test so UI assertions verify actual data, not just element visibility.
+Web tests use **API-driven preconditions** — real backend APIs are called before each test so UI assertions verify actual data, not just element visibility.
 
 ## Framework Structure
 
@@ -22,7 +22,7 @@ Optum_automation_test/
 │       ├── api-helpers.ts             # Response validation helpers (envelope checks)
 │       └── api-test.ts               # Custom Playwright fixture with Bearer token auth
 │
-├── frontend/
+├── web/
 │   ├── pages/                         # Page Object Models
 │   │   ├── login.page.ts             # Welcome, HealthSafe ID login, OTP flow
 │   │   ├── home.page.ts              # Navigation, banner, summary, sections
@@ -53,9 +53,9 @@ Optum_automation_test/
 └── package.json                      # Scripts and dependencies
 ```
 
-## API-Driven Frontend Tests
+## API-Driven Web Tests
 
-Frontend tests follow a **precondition → navigate → assert** pattern. Before each test, real backend APIs are called and the responses are stored. UI assertions then verify both structural visibility and that displayed values match the API data.
+Web tests follow a **precondition → navigate → assert** pattern. Before each test, real backend APIs are called and the responses are stored. UI assertions then verify both structural visibility and that displayed values match the API data.
 
 ```
 1. auth.setup.ts logs in → saves storageState + extracts API token
@@ -70,7 +70,7 @@ Frontend tests follow a **precondition → navigate → assert** pattern. Before
 
 ### APIs Called Per Page
 
-| Frontend Spec | APIs Called in `beforeEach` | Dynamic Assertions |
+| Web Spec | APIs Called in `beforeEach` | Dynamic Assertions |
 |---------------|---------------------------|--------------------|
 | **home** | banners, employerRewards, userPoints, healthScore, onboardingSteps, focusAreas, missionsHome, topPicks | Banner headline text, rewards/points/health score values in summary |
 | **explore** | recommendedActivities, missionsExplore, challenges | Activities count, missions presence |
@@ -78,7 +78,7 @@ Frontend tests follow a **precondition → navigate → assert** pattern. Before
 | **rewards** | employerRewards, userPoints, offers, auctions, sweepstakes, donations | Rewards balance, points balance, section content |
 | **settings** | avatars | Avatar data loaded |
 
-The `api` fixture is provided by `frontend/utils/api-test.ts`, which reads the token from `playwright/.auth/api-token.json` and creates an authenticated `APIRequestContext`. API endpoint constants are reused from `backend/utils/api-constants.ts`.
+The `api` fixture is provided by `web/utils/api-test.ts`, which reads the token from `playwright/.auth/api-token.json` and creates an authenticated `APIRequestContext`. API endpoint constants are reused from `backend/utils/api-constants.ts`.
 
 ## Test Coverage
 
@@ -104,7 +104,7 @@ All API tests hit `https://api.rallyengage.com` with an authenticated Bearer tok
 - `expectTokenResponse` - Token details `{ hsidToken }`
 - `expectLegalAuthsResponse` - Legal auths `{ legalAuthForms: [] }`
 
-### Frontend UI Tests (29 tests)
+### Web UI Tests (29 tests)
 
 All UI tests run against `https://1126.rallyengage.com` using the Page Object Model pattern. Tests combine structural checks (element visibility) with dynamic assertions (API data matches displayed values).
 
@@ -120,14 +120,14 @@ All UI tests run against `https://1126.rallyengage.com` using the Page Object Mo
 
 ## Authentication Flow
 
-The framework uses a **unified auth system** — both frontend and backend tests share the same login flow, and frontend auth setup also extracts the API token for use in test preconditions.
+The framework uses a **unified auth system** — both web and backend tests share the same login flow, and web auth setup also extracts the API token for use in test preconditions.
 
 ```
                     UI Login (HealthSafe ID + OTP)
                           |
               +-----------+-----------+
               v                       v
-     Frontend Auth                Backend Auth
+     Web Auth                Backend Auth
   (auth.setup.ts)            (api-auth.setup.ts)
         |     |                    |      |
         v     v                    v      v
@@ -145,9 +145,9 @@ The framework uses a **unified auth system** — both frontend and backend tests
 
 | Project | Purpose | Depends On | Auth State |
 |---------|---------|------------|------------|
-| `setup` | Frontend auth setup | - | Creates `user.json` + `api-token.json` |
+| `setup` | Web auth setup | - | Creates `user.json` + `api-token.json` |
 | `login` | Login flow tests | - | None (tests login itself) |
-| `chromium` | All other frontend tests | `setup` | Uses `user.json` + `api-token.json` |
+| `chromium` | All other web tests | `setup` | Uses `user.json` + `api-token.json` |
 | `api-setup` | Backend auth setup | - | Creates `api-token.json` + `api-user.json` |
 | `api` | All API tests | `api-setup` | Uses `api-token.json` |
 
@@ -170,7 +170,7 @@ npx playwright install --with-deps
 # Run all tests (frontend + backend)
 npm test
 
-# -- Frontend tests --
+# -- Web tests --
 npm run test:login
 npm run test:home
 npm run test:explore

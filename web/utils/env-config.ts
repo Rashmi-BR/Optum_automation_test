@@ -68,7 +68,7 @@ const ENV_MAP: Record<EnvName, EnvConfig> = {
   },
 };
 
-const ENV_NAME: EnvName = (process.env.ENV as EnvName) || '1126';
+const ENV_NAME: EnvName = (process.env.ENV as EnvName) || 'uat';
 
 if (!ENV_MAP[ENV_NAME]) {
   throw new Error(`Unknown environment "${ENV_NAME}". Use ENV=1126 or ENV=uat`);

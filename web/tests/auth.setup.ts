@@ -12,7 +12,7 @@ setup('authenticate', async ({ page }) => {
   await loginPage.completeLogin(credentials);
   await page.context().storageState({ path: AUTH_FILE });
 
-  // Extract auth token for API preconditions in frontend tests
+  // Extract auth token for API preconditions in web tests
   const authToken = await page.evaluate(() => localStorage.getItem('auth_token'));
   fs.writeFileSync(API_TOKEN_FILE, JSON.stringify({ token: authToken }));
 });

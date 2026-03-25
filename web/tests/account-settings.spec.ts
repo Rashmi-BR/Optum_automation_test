@@ -61,31 +61,19 @@ test.describe('Account Settings', () => {
     await settingsPage.expectAccountDetailsVisible();
   });
 
-  test('Verify Update Email button is clickable', async () => {
-    const clicked = await settingsPage.clickUpdateEmail();
-    expect(clicked, 'Update Email button should be present and clickable').toBe(true);
+  test('Verify Update button is clickable', async () => {
+    // The app shows a single "Update" button (for Avatar) on the Account Details page
+    const updateBtn = page.getByText('Update', { exact: true });
+    const count = await updateBtn.count();
+    console.log(`[AccountSettings] Found ${count} Update button(s)`);
+    expect(count).toBeGreaterThan(0);
 
-    // Take a screenshot to capture what opened
-    console.log('[AccountSettings] Update Email clicked — checking for update UI');
-    await page.waitForTimeout(1000);
-    await settingsPage.dismissUpdateModal();
-  });
+    // Click the first visible Update button
+    await updateBtn.first().scrollIntoViewIfNeeded();
+    await updateBtn.first().click();
+    await page.waitForTimeout(2000);
+    console.log('[AccountSettings] Update button clicked — checking for update UI');
 
-  test('Verify Update Username button is clickable', async () => {
-    const clicked = await settingsPage.clickUpdateUsername();
-    expect(clicked, 'Update Username button should be present and clickable').toBe(true);
-
-    console.log('[AccountSettings] Update Username clicked — checking for update UI');
-    await page.waitForTimeout(1000);
-    await settingsPage.dismissUpdateModal();
-  });
-
-  test('Verify Update Avatar button is clickable', async () => {
-    const clicked = await settingsPage.clickUpdateAvatar();
-    expect(clicked, 'Update Avatar button should be present and clickable').toBe(true);
-
-    console.log('[AccountSettings] Update Avatar clicked — checking for update UI');
-    await page.waitForTimeout(1000);
     await settingsPage.dismissUpdateModal();
   });
 
@@ -95,6 +83,9 @@ test.describe('Account Settings', () => {
     );
     expect(sameTab, 'Health Profile should open in the same page').toBe(true);
     console.log(`[AccountSettings] Health Profile — URL: ${page.url()}`);
+    // Navigate back to settings — Health Profile is a full-page view without sidebar
+    await page.goto('/settings/account');
+    await page.waitForTimeout(3000);
   });
 
   test('Verify Health Survey opens in same page', async () => {
@@ -103,6 +94,9 @@ test.describe('Account Settings', () => {
     );
     expect(sameTab, 'Health Survey should open in the same page').toBe(true);
     console.log(`[AccountSettings] Health Survey — URL: ${page.url()}`);
+    // Navigate back to settings
+    await page.goto('/settings/account');
+    await page.waitForTimeout(3000);
   });
 
   test('Verify About the Program opens in same page', async () => {
@@ -119,6 +113,9 @@ test.describe('Account Settings', () => {
     );
     expect(sameTab, 'Activity Tracker should open in the same page').toBe(true);
     console.log(`[AccountSettings] Activity Tracker — URL: ${page.url()}`);
+    // Navigate back to settings
+    await page.goto('/settings/account');
+    await page.waitForTimeout(3000);
   });
 
   test('Verify Settings opens in same page', async () => {
@@ -157,8 +154,7 @@ test.describe('Account Settings', () => {
 
   test('Verify About the Program detail content is visible', async () => {
     await settingsPage.clickAboutTheProgram();
-    const content = page.locator('body');
-    await expect(content.getByText('About the Program')).toBeVisible();
+    await expect(page.getByTestId('about-the-program-label')).toBeVisible();
     console.log(`[AccountSettings] About the Program details — URL: ${page.url()}`);
   });
 
